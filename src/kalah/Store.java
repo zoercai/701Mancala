@@ -2,8 +2,8 @@ package kalah;
 
 public class Store extends Pit{
 	
-	public Store(int seeds){
-		super(seeds);
+	public Store(int playerId, int seeds){
+		super(playerId, seeds);
 	}
 	
 	

@@ -2,8 +2,8 @@ package kalah;
 
 public class House extends Pit{
 	
-	public House(int seeds){
-		super(seeds);
+	public House(int playerId, int seeds){
+		super(playerId, seeds);
 	}
 	
 	public int removeSeeds(){
