@@ -100,7 +100,6 @@ public class Board {
 					// capture
 					if (seedsInOppositeHouse > 0) {
 						// Deposit opposite house seeds + 1 into player's store
-						// TODO refactor
 						board.get(currentPitIndex / this.pitsPerPlayer * this.pitsPerPlayer + this.housesPerPlayer)
 								.addSeeds(seedsInOppositeHouse + 1);
 					} else {
