@@ -11,24 +11,27 @@ public class Board {
 
 	int initialHouseSeedNum = 4;
 	int initialStoreSeedNum = 0;
-
-	public Board() {
-		for (int i = 0; i < numberOfPlayers; i++) {
-			// Add houses for each player
-			for (int j = 0; j < housesPerPlayer; j++) {
-				board.add(new House(i, initialHouseSeedNum));
-			}
-			// Add stores for each player
-			for (int j = 0; j < storesPerPlayer; j++) {
-				board.add(new Store(i, initialStoreSeedNum));
-			}
-		}
+	
+	public Board(){
+		initialiseBoard();
 	}
 
 	public Board(int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
-		// TODO later extract initialise board method
-		// Board();
+		initialiseBoard();
+	}
+	
+	private void initialiseBoard(){
+		for (int i = 1; i <= this.numberOfPlayers; i++) {
+			// Add houses for each player
+			for (int j = 0; j < this.housesPerPlayer; j++) {
+				this.board.add(new House(i, this.initialHouseSeedNum));
+			}
+			// Add stores for each player
+			for (int j = 0; j < this.storesPerPlayer; j++) {
+				this.board.add(new Store(i, this.initialStoreSeedNum));
+			}
+		}
 	}
 
 	/**
@@ -36,13 +39,10 @@ public class Board {
 	 * @param house
 	 * @return whether player gets another turn
 	 */
-	// boolean and gives another turn, doesn't specify why for another turn
-	// (whether invalid move or not), but could be changed easily
-	// TODO could change in future
-	public boolean pick(int playerId, int house) {
+	public TurnState pick(int playerId, int house) {
 		// Check if house out of range, do nothing, give player another turn
 		if (house > this.housesPerPlayer) {
-			return true;
+			return TurnState.OutOfRangeHouse;
 		}
 
 		int houseIndex = getIndex(playerId, house);
@@ -54,7 +54,7 @@ public class Board {
 		// Check if there are seeds in house, if no, do nothing, give player
 		// another turn
 		if (seedsToSow == 0) {
-			return true;
+			return TurnState.EmptyHouse;
 		}
 
 		// Sow all but one seed into following houses and player's own store
@@ -89,17 +89,14 @@ public class Board {
 				board.get(currentPitIndex).addSeeds(1);
 			} // If the house belongs to the current player 
 			else {
-				boolean houseEmpty = false;
-
 				// If house is empty
 				if (lastPit.getSeeds() == 0) {
-					int seedsInOppositeHouse = board.get(getOppositeHouse(currentPitIndex)).getSeeds();
+					int seedsInOppositeHouse = ((House) board.get(getOppositeHouse(currentPitIndex))).removeSeeds();
 					// Check if opposite house has at least one seed, if so, capture
 					if (seedsInOppositeHouse > 0) {
-						// Empty opposite house seeds
-						((House) board.get(getOppositeHouse(currentPitIndex))).removeSeeds();
 						// Deposit opposite house seeds + 1 into player's store
-						board.get(currentPitIndex).addSeeds(seedsInOppositeHouse + 1);
+						// TODO refactor
+						board.get(currentPitIndex/this.pitsPerPlayer*this.pitsPerPlayer+this.housesPerPlayer).addSeeds(seedsInOppositeHouse + 1);
 					} else {
 						// If not capture, just deposit
 						board.get(currentPitIndex).addSeeds(1);
@@ -110,13 +107,13 @@ public class Board {
 					board.get(currentPitIndex).addSeeds(1);
 				}
 			}
-			return false;
+			return TurnState.NextPlayer;
 		}
 		
 		// Else next pit is player's own store, so sow seed and give another turn (return
 		// true)
 		board.get(currentPitIndex).addSeeds(1);
-		return true;
+		return TurnState.AnotherTurn;
 	}
 
 	public boolean canMove(int playerId) {
@@ -142,17 +139,21 @@ public class Board {
 
 	
 	private int getOppositeHouse(int houseIndex) {
-		int playerId = houseIndex / this.pitsPerPlayer;
+		int playerId = houseIndex / this.pitsPerPlayer % this.numberOfPlayers + 1;
 		int houseNumber = houseIndex % this.pitsPerPlayer + 1;
 		
 		if(houseNumber>this.housesPerPlayer){
 			throw new IllegalArgumentException();
 		}
 		
-		int oppositePlayerIndex = this.numberOfPlayers/2 + (playerId-1);
+		int oppositePlayerIndex = (this.numberOfPlayers/2 + playerId)/(this.numberOfPlayers)>1 ?  (this.numberOfPlayers/2 + playerId)%(this.numberOfPlayers)-1 : (this.numberOfPlayers/2 + playerId)-1;
 		int indexOfFirstOppositeHouse = oppositePlayerIndex * this.pitsPerPlayer;
 		int oppositeHouseIndex = indexOfFirstOppositeHouse + (this.housesPerPlayer - houseNumber);
 		return oppositeHouseIndex;
+	}
+
+	public int getSeedNumber(int playerId, int houseNumber) {
+		return board.get(getIndex(playerId, houseNumber)).getSeeds();
 	}
 
 }

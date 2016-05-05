@@ -13,7 +13,7 @@ public class Pit {
 	}
 
 	public int getSeeds() {
-		return seeds;
+		return this.seeds;
 	}
 
 	public void addSeeds(int seeds) {
