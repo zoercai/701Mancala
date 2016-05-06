@@ -4,8 +4,8 @@ import com.qualitascorpus.testsupport.IO;
 import com.qualitascorpus.testsupport.MockIO;
 
 public class Printer {
-	IO io;
-	Board board;
+	private IO io;
+	private Board board;
 
 	public Printer(IO io, Board board) {
 		this.io = io;
@@ -44,9 +44,9 @@ public class Printer {
 		int winner = 1;
 		boolean tie = true;
 
-		for (int i = 0; i < board.numberOfPlayers; i++) {
+		for (int i = 0; i < board.getNumberOfPlayers(); i++) {
 			int sum = 0;
-			for (int j = 1; j <= board.pitsPerPlayer; j++) {
+			for (int j = 1; j <= board.getPitsPerPlayer(); j++) {
 				sum += board.getSeedNumber(i + 1, j);
 			}
 			io.println("\tplayer " + (i + 1) + ":" + sum);
@@ -74,7 +74,12 @@ public class Printer {
 	public void printEmptyHouse() {
 		io.println("House is empty. Move again.");
 	}
-
+	
+	public String askForInput(int currentPlayerId){
+		return io
+		.readFromKeyboard("Player P" + currentPlayerId + "'s turn - Specify house number or 'q' to quit: ");
+	}
+	
 	private void printBorder() {
 		io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 	}

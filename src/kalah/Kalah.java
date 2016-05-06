@@ -29,8 +29,7 @@ public class Kalah {
 		int currentPlayerId = 1;
 
 		printer.printBoard();
-		String input = io
-				.readFromKeyboard("Player P" + currentPlayerId + "'s turn - Specify house number or 'q' to quit: ");
+		String input = printer.askForInput(currentPlayerId);
 
 		boolean completeGame = false;
 
@@ -54,8 +53,7 @@ public class Kalah {
 				break;
 			}
 
-			input = io
-					.readFromKeyboard("Player P" + currentPlayerId + "'s turn - Specify house number or 'q' to quit: ");
+			input = printer.askForInput(currentPlayerId);
 		}
 
 		io.println("Game over");

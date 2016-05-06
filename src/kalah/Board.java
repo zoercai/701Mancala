@@ -1,18 +1,18 @@
 package kalah;
 
 public class Board {
-	CircularArrayList<Pit> board = new CircularArrayList<Pit>();
+	private CircularArrayList<Pit> board = new CircularArrayList<Pit>();
 
 	// These are default values, they could be modified in constructor
-	int numberOfPlayers = 2;
-	int housesPerPlayer = 6;
-	int storesPerPlayer = 1;
+	private int numberOfPlayers = 2;
+	private int housesPerPlayer = 6;
+	private int storesPerPlayer = 1;
 	
-	int initialHouseSeedNum = 4;
-	int initialStoreSeedNum = 0;
+	private int initialHouseSeedNum = 4;
+	private int initialStoreSeedNum = 0;
 
-	int pitsPerPlayer = housesPerPlayer + storesPerPlayer;
-	int totalPits = numberOfPlayers * (pitsPerPlayer);
+	private int pitsPerPlayer = housesPerPlayer + storesPerPlayer;
+	private int totalPits = numberOfPlayers * (pitsPerPlayer);
 
 	public Board() {
 		initialiseBoard();
@@ -21,23 +21,6 @@ public class Board {
 	public Board(int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
 		initialiseBoard();
-	}
-
-	/**
-	 * So that multiple constructors could be added and they could reuse this
-	 * code
-	 */
-	private void initialiseBoard() {
-		for (int i = 1; i <= this.numberOfPlayers; i++) {
-			// Add houses for each player
-			for (int j = 0; j < this.housesPerPlayer; j++) {
-				this.board.add(new House(i, this.initialHouseSeedNum));
-			}
-			// Add stores for each player
-			for (int j = 0; j < this.storesPerPlayer; j++) {
-				this.board.add(new Store(i, this.initialStoreSeedNum));
-			}
-		}
 	}
 
 	/**
@@ -144,6 +127,31 @@ public class Board {
 	 */
 	public int getSeedNumber(int playerId, int houseNumber) {
 		return board.get(getIndex(playerId, houseNumber)).getSeeds();
+	}
+	
+	public int getNumberOfPlayers(){
+		return this.numberOfPlayers;
+	}
+	
+	public int getPitsPerPlayer(){
+		return this.pitsPerPlayer;
+	}
+
+	/**
+	 * So that multiple constructors could be added and they could reuse this
+	 * code
+	 */
+	private void initialiseBoard() {
+		for (int i = 1; i <= this.numberOfPlayers; i++) {
+			// Add houses for each player
+			for (int j = 0; j < this.housesPerPlayer; j++) {
+				this.board.add(new House(i, this.initialHouseSeedNum));
+			}
+			// Add stores for each player
+			for (int j = 0; j < this.storesPerPlayer; j++) {
+				this.board.add(new Store(i, this.initialStoreSeedNum));
+			}
+		}
 	}
 
 	/**
