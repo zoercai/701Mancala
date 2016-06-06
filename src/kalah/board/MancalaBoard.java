@@ -1,6 +1,8 @@
-package kalah;
+package kalah.board;
 
-public class Board {
+import kalah.TurnState;
+
+public class MancalaBoard implements PitsBoard{
 	private CircularArrayList<Pit> board = new CircularArrayList<Pit>();
 
 	// These are default values, they could be modified in constructor
@@ -14,11 +16,11 @@ public class Board {
 	private int pitsPerPlayer = housesPerPlayer + storesPerPlayer;
 	private int totalPits = numberOfPlayers * (pitsPerPlayer);
 
-	public Board() {
+	public MancalaBoard() {
 		initialiseBoard();
 	}
 
-	public Board(int numberOfPlayers) {
+	public MancalaBoard(int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
 		initialiseBoard();
 	}
@@ -32,6 +34,7 @@ public class Board {
 	 *            house number, starts from 1
 	 * @return outcome of the current turn, an enum
 	 */
+	@Override
 	public TurnState pick(int playerId, int house) {
 		int houseIndex = getIndex(playerId, house);
 		int seedsToSow = board.get(houseIndex).getSeeds();
@@ -109,6 +112,7 @@ public class Board {
 	 *            player id, starts from 1
 	 * @return whether the player has remaining moves
 	 */
+	@Override
 	public boolean canMove(int playerId) {
 		for (int i = 0; i < this.housesPerPlayer; i++) {
 			if (this.board.get((playerId - 1) * this.pitsPerPlayer + i).getSeeds() > 0) {
@@ -125,14 +129,17 @@ public class Board {
 	 *            number of the house
 	 * @return number of seeds in the house
 	 */
+	@Override
 	public int getSeedNumber(int playerId, int houseNumber) {
 		return board.get(getIndex(playerId, houseNumber)).getSeeds();
 	}
 	
+	@Override
 	public int getNumberOfPlayers(){
 		return this.numberOfPlayers;
 	}
-	
+
+	@Override
 	public int getPitsPerPlayer(){
 		return this.pitsPerPlayer;
 	}

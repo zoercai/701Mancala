@@ -1,13 +1,15 @@
-package kalah;
+package kalah.display;
 
 import com.qualitascorpus.testsupport.IO;
 import com.qualitascorpus.testsupport.MockIO;
 
+import kalah.board.PitsBoard;
+
 public class Printer {
 	private IO io;
-	private Board board;
+	private PitsBoard board;
 
-	public Printer(IO io, Board board) {
+	public Printer(IO io, PitsBoard board) {
 		this.io = io;
 		this.board = board;
 	}

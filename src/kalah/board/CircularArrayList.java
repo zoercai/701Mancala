@@ -1,4 +1,4 @@
-package kalah;
+package kalah.board;
 
 import java.util.ArrayList;
 

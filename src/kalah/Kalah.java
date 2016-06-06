@@ -3,19 +3,23 @@ package kalah;
 import com.qualitascorpus.testsupport.IO;
 import com.qualitascorpus.testsupport.MockIO;
 
+import kalah.board.MancalaBoard;
+import kalah.board.PitsBoard;
+import kalah.display.Printer;
+
 /**
  * This class is the starting point for the Modifiability Assignment.
  */
 public class Kalah {
 
 	// Board is only modified via methods
-	private Board board;
+	private PitsBoard board;
 
 	// Could be changed
 	int numberOfPlayers = 2;
 
 	public Kalah() {
-		this.board = new Board(this.numberOfPlayers);
+		this.board = new MancalaBoard(this.numberOfPlayers);
 	}
 
 	public static void main(String[] args) {
