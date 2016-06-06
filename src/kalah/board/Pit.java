@@ -1,6 +1,6 @@
 package kalah.board;
 
-public class Pit {
+public abstract class Pit {
 
 	private int playerId;
 

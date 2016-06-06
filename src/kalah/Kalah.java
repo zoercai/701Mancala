@@ -5,6 +5,7 @@ import com.qualitascorpus.testsupport.MockIO;
 
 import kalah.board.MancalaBoard;
 import kalah.board.PitsBoard;
+import kalah.display.MancalaPrinter;
 import kalah.display.Printer;
 
 /**
@@ -27,7 +28,7 @@ public class Kalah {
 	}
 
 	public void play(IO io) {
-		Printer printer = new Printer(io, this.board);
+		Printer printer = new MancalaPrinter(io, this.board);
 
 		// Could be changed so that another player starts first
 		int currentPlayerId = 1;
@@ -46,7 +47,7 @@ public class Kalah {
 			if (turn == TurnState.NextPlayer) {
 				currentPlayerId = getNextPlayer(currentPlayerId);
 			} else if (turn == TurnState.EmptyHouse) {
-				printer.printEmptyHouse();
+				printer.printInvalidMove();
 			}
 
 			printer.printBoard();
